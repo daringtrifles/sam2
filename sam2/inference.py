@@ -148,7 +148,6 @@ def best_image_to_video_validation(video_dir, replay_vidname, background_vidname
     composite_frames = sorted(composite_frames.items(), key=lambda x: x[0])
     background_frames = sorted(background_frames.items(), key=lambda x: x[0])
 
-    print("LEN BACKGROUND FRAMES", len(background_frames))
     size = composite_frames[0][1].shape[1], composite_frames[0][1].shape[0]
     fps = 10
     composite_out = cv2.VideoWriter(replay_vidname, cv2.VideoWriter_fourcc(*'mp4v'), fps, (size[0], size[1]), True)
@@ -199,12 +198,12 @@ def process_directory(input_dir, output_dir):
     
     for i, image_file in enumerate(sorted(image_files)):
         input_path = os.path.join(input_dir, image_file)
-        output_path = os.path.join(output_dir, f"{Path(image_file).stem}_converted.jpg")
+        output_path = os.path.join(output_dir, f"{int(Path(image_file).stem)}.jpg")
+        print(output_path)
         
         convert_image(input_path, output_path)
         
-        if (i + 1) % 10 == 0:
-            print(f"Processed {i + 1}/{len(image_files)} images")
+
 
 
 
@@ -232,6 +231,4 @@ if __name__ == "__main__":
 
     
     args = parser.parse_args()
-    
-    #print(f"Running inference on dataset {args.dataset} for episodes {args.start} to {args.end}")
     run_inference(args.start, args.end, args.directory)
