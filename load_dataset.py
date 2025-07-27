@@ -268,7 +268,7 @@ dataset_to_processing_function = {
 }
 
 
-def load_dataset(dataset_name, start_episode, end_episode, directory):
+def load_dataset(dataset_name, start_episode, directory):
     def extract(episode):
         return episode['steps'].map(lambda step: dataset_to_processing_function[dataset_name](step))
     
@@ -278,7 +278,7 @@ def load_dataset(dataset_name, start_episode, end_episode, directory):
     shuffle_seed=None,             # no file shuffling
     )
     ds = builder.as_dataset(
-        split=f"train[{start_episode}:{end_episode+1}]",
+        split=f"train[{start_episode}:{start_episode+1}]",
         shuffle_files=False,
         read_config=read_config,
     )
@@ -332,7 +332,7 @@ def main():
     
     print(f"Loading dataset {args.dataset} episodes {args.start} to {args.end}")
     for i in range (args.start, args.end+1):
-        load_dataset(args.dataset, i, i+1, args.save_dir)
+        load_dataset(args.dataset, i, args.save_dir)
 
 if __name__ == "__main__":
     main()
